@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html>
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hooke Microscope</title>
+
+  <style>
+    /* Styles généraux */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* En-tête */
+        header {
+            background: linear-gradient(135deg, #1a5f7a 0%, #159895 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Navigation */
+        nav {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 1rem 0;
+        }
+        
+        nav li {
+            margin: 0 1.5rem;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #1a5f7a;
+            font-weight: 600;
+            transition: color 0.3s;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+        
+        nav a:hover {
+            color: #159895;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #159895;
+            transition: width 0.3s;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        /* Sections principales */
+        section {
+            padding: 4rem 0;
+        }
+        
+        section:nth-child(even) {
+            background-color: #fff;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #1a5f7a;
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .section-title p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+        
+        .text-content {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .image-content {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+        
+        .image-content img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .image-caption {
+            margin-top: 0.5rem;
+            font-style: italic;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Cartes pour les personnages historiques */
+        .historical-figures {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .figure-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .figure-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .figure-card h3 {
+            color: #1a5f7a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .figure-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Chronologie */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: #1a5f7a;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border: 4px solid #1a5f7a;
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .timeline-item:nth-child(odd)::after {
+            right: -10px;
+        }
+        
+        .timeline-item:nth-child(even)::after {
+            left: -10px;
+        }
+        
+        .timeline-content {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timeline-content h3 {
+            margin-bottom: 0.5rem;
+            color: #1a5f7a;
+        }
+        
+        /* Types de microscopes */
+        .microscope-types {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .microscope-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            width: 350px;
+            text-align: center;
+        }
+        
+        .microscope-card h3 {
+            color: #1a5f7a;
+            margin-bottom: 1rem;
+        }
+        
+        .microscope-card ul {
+            text-align: left;
+            margin-top: 1rem;
+        }
+        
+        .microscope-card li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Pied de page */
+        footer {
+            background-color: #1a5f7a;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+        
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav li {
+                margin: 0.5rem 0;
+            }
+            
+            .content {
+                flex-direction: column;
+            }
+            
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+            
+            .timeline-item::after {
+                left: 21px;
+            }
+            
+            .timeline-item:nth-child(odd)::after,
+            .timeline-item:nth-child(even)::after {
+                left: 21px;
+            }
+        }
+  </style>
+
+  
+</head>
+<body>
+  <!-- En-tête -->
+    <header>
+        <div class="container">
+            <h1>Une Longue Histoire de la Matière</h1>
+            <p>Découvrez comment l'invention du microscope a révolutionné notre compréhension du vivant, de la cellule à la molécule</p>
+        </div>
+    </header>
+    
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#activite1">Le Microscope</a></li>
+                <li><a href="#activite2">Théorie Cellulaire</a></li>
+                <li><a href="#activite3">Échelle Moléculaire</a></li>
+                <li><a href="#chronologie">Chronologie</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Activité 1 : Invention du microscope -->
+    <section id="activite1">
+        <div class="container">
+            <div class="section-title">
+                <h2>Activité 1 : L'invention du microscope et la découverte de la cellule</h2>
+                <p>Comment une invention technique a-t-elle révélé l'unité du vivant ?</p>
+            </div>
+            
+            <div class="content">
+                <div class="text-content">
+                    <p>Tout commence à la fin du XVIe siècle. Imaginez Zacharias Jansen, un opticien curieux, qui assemble deux lentilles dans des tubes. Ce bricolage ingénieux, capable de grossir les objets dix fois, est l'ancêtre de notre microscope moderne.</p>
+                    
+                    <p>Puis, d'autres esprits brillants prennent le relais. Galilée améliore le concept, et surtout, le Néerlandais <strong>Antoni Van Leeuwenhoek</strong> pousse la technique plus loin avec une seule lentille extrêmement puissante. Son microscope, dix fois plus performant, lui permet d'observer et de dessiner pour la première fois des cellules vivantes, sans leur donner ce nom.</p>
+                    
+                    <p>Le véritable "déclic" a lieu en 1665, lorsque <strong>Robert Hooke</strong> observe un morceau de liège. Sous ses yeux, une structure composée de petites alvéoles, qu'il compare à un "rayon de miel". Il les baptise <strong>"cellules"</strong>. Le terme était né.</p>
+                    
+                    <p>Ces inventions successives, des lentilles de meilleure qualité à des systèmes d'éclairage plus efficaces, ont transformé un simple outil d'opticien en un instrument capable de révéler que tous les êtres vivants sont constitués de cette même unité structurelle : la cellule.</p>
+                </div>
+                
+                <div class="image-content">
+        <img src="https://www.worldhistory.org/img/r/p/1500x1500/17915.png.webp?v=1726256410-1695137775$0">
+    </div>
+                    <p class="image-caption">Reproduction du Microscope de Robert Hooke</p>
+                </div>
+            
+            <div class="historical-figures">
+                <div class="figure-card">
+                    <h3>Zacharias Jansen</h3>
+                    <p>Inventeur du premier microscope composé (1595)</p>
+                </div>
+                
+                <div class="figure-card">
+                    <h3>Antoni Van Leeuwenhoek</h3>
+                    <p>Premier à observer des cellules vivantes (1668)</p>
+                </div>
+                
+                <div class="figure-card">
+                    <h3>Robert Hooke</h3>
+                    <p>A nommé les "cellules" après observation du liège (1665)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Activité 2 : Théorie cellulaire -->
+    <section id="activite2">
+        <div class="container">
+            <div class="section-title">
+                <h2>Activité 2 : La théorie cellulaire et la fin d'une croyance ancienne</h2>
+                <p>Comment une idée nouvelle a-t-elle triomphé de siècles de croyances ?</p>
+            </div>
+            
+            <div class="content">
+                <div class="text-content">
+                    <p>Une fois la cellule découverte, il a fallu comprendre son rôle. Au XIXe siècle, le botaniste <strong>Matthias Schleiden</strong> et le zoologiste <strong>Theodor Schwann</strong> comparent leurs observations : les cellules sont partout, autant dans les plantes que dans les animaux ! Ils énoncent ainsi le premier principe de la <strong>théorie cellulaire</strong> : <strong>la cellule est l'unité structurelle et fonctionnelle de tout être vivant</strong>.</p>
+                    
+                    <p>Peu après, <strong>Rudolf Virchow</strong> ajoute une pièce maîtresse au puzzle : "Toute cellule provient d'une cellule préexistante". La vie ne naît pas de rien, elle se divise et se propage.</p>
+                    
+                    <p>Cette vision s'opposait frontalement à la vieille théorie de la <strong>génération spontanée</strong>, qui affirmait que la vie pouvait apparaître spontanément à partir de matière inanimée (des souris naissant de vieux chiffons et du blé, selon Van Helmont !).</p>
+                    
+                    <p>La controverse fut vive, jusqu'à ce que <strong>Louis Pasteur</strong> ne mette un point final au débat en 1861. Par une expérience célèbre avec des ballons à col de cygne, il prouva que les micro-organismes venaient de l'air ambiant et ne se "généraient" pas spontanément dans un bouillon stérile. La théorie cellulaire était définitivement validée.</p>
+                </div>
+                
+                <div class="image-content">
+                    <img src="https://media.snl.no/media/316356/standard_compressed_louis_pasteur.jpg">
+                    <p class="image-caption">Louis Pasteur, celui qui a invalidé la génération spontanée</p>
+                </div>
+    </section>
+    
+    <!-- Activité 3 : Échelle moléculaire -->
+    <section id="activite3">
+        <div class="container">
+            <div class="section-title">
+                <h2>Activité 3 : Plongée dans l'infiniment petit : du noyau à la molécule</h2>
+                <p>Comment a-t-on pu observer l'intimité de la cellule ?</p>
+            </div>
+            
+            <div class="content">
+                <div class="text-content">
+                    <p>Le microscope optique avait atteint ses limites. Pour voir au-delà, il fallait une nouvelle révolution. Elle vint en 1931 avec l'invention du <strong>microscope électronique</strong> par Knoll et Ruska. Le principe ? Remplacer la lumière par des faisceaux d'électrons, dont la longueur d'onde est bien plus petite, permettant de distinguer des détails bien plus fins.</p>
+                    
+                    <p>Cette puissance nouvelle a permis de faire le lien entre la cellule et les molécules qui la constituent. On a pu observer les chromosomes, puis distinguer les filaments d'ADN et de protéines. Même si la célèbre forme en double hélice de l'ADN reste trop petite pour être vue directement, le microscope électronique a ouvert une fenêtre sur l'échelle moléculaire, achevant de relier le monde visible à l'invisible.</p>
+                </div>
+                
+                <div class="image-content">
+                    <img src="https://www.kern-sohn.com/cosmoshop/default/pix/a/n/OBT-101.jpg">
+                    <p class="image-caption">Un microscope électronique moderne</p>
+                </div>
+            </div>
+            
+            <div class="microscope-types">
+                <div class="microscope-card">
+                    <h3>Microscope Électronique en Transmission (MET)</h3>
+                    <p>Comme une radiographie, il traverse l'échantillon et révèle les structures internes, comme les mitochondries.</p>
+                    <ul>
+                        <li>Permet d'observer l'intérieur des cellules</li>
+                        <li>Idéal pour l'étude des organites</li>
+                        <li>Images en noir et blanc, souvent colorisées après</li>
+                    </ul>
+                </div>
+                
+                <div class="microscope-card">
+                    <h3>Microscope Électronique à Balayage (MEB)</h3>
+                    <p>Il balaye la surface des cellules, offrant des images en 3D spectaculaires.</p>
+                    <ul>
+                        <li>Révèle les reliefs de surface</li>
+                        <li>Technique de cryofracture souvent utilisée</li>
+                        <li>Résolution inférieure au MET mais images en 3D</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Chronologie -->
+    <section id="chronologie">
+        <div class="container">
+            <div class="section-title">
+                <h2>Chronologie des Découvertes</h2>
+                <p>Les étapes clés de l'histoire de la microscopie et de la biologie cellulaire</p>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>1595</h3>
+                        <p>Zacharias Jansen invente le premier microscope composé avec un grossissement ×10.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>1609</h3>
+                        <p>Galilée conçoit l'« occhiolino », ancêtre du microscope avec grossissement ×30.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>1665</h3>
+                        <p>Robert Hooke observe des cellules dans du liège et invente le terme « cellule ».</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>1668</h3>
+                        <p>Antoni Van Leeuwenhoek présente un microscope 10 fois plus puissant et observe des cellules vivantes.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>1839</h3>
+                        <p>Schleiden et Schwann formulent la théorie cellulaire : la cellule est l'unité structurelle des êtres vivants.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>1855</h3>
+                        <p>Virchow énonce que toute cellule provient d'une cellule préexistante.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>1861</h3>
+                        <p>Pasteur réfute définitivement la théorie de la génération spontanée.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>1931</h3>
+                        <p>Knoll et Ruska inventent le premier microscope électronique.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Pied de page -->
+    <footer>
+        <div class="container">
+            <p>Une Longue Histoire de la Matière</p>
+            <p>Découvrez comment l'invention du microscope a révolutionné notre compréhension du vivant</p>
+            <p>© 2025 - Tous droits réservés</p>
+        </div>
+
+    </footer>
+
+  <script>
+    
+  </script>
+</body>
+</html>
+
+
